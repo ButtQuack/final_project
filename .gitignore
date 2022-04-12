@@ -1,0 +1,4 @@
+*.swp
+*.swo
+reader/temp/*
+**/__pycache__/*
