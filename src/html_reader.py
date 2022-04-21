@@ -68,7 +68,27 @@ def parse_answer(tag):
 
 def parse_reference(ref):
     "Parses a reference string, returning a dict. NOT DONE."
-    return {}
+    month_names = {
+        "01": "January",
+        "06": "June",
+        "08": "August",
+    }
+    course_names = {
+        "ai": "Algebra I",
+        "aii": "Algebra II",
+        "geo": "Geometry",
+    }
+    month = month_names[ref[0:2]]
+    year = int(ref[2:4]) + 2000
+    question_number = int(ref[4:6])
+    course = course_names[ref[6:]]
+    
+    return {
+        "month": month,
+        "year": year,
+        "question": question_number,
+        "course": course
+    }
 
 def html_to_questions(html):
     "Parses test questions from html string"

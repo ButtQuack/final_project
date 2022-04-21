@@ -23,11 +23,17 @@ class TestParseReference(TestCaseExtended):
             "question": 23,
             "course": "Algebra I"
         },
-        "012032ai": {
-            "year": 2020,
+        "011832aii": {
+            "year": 2018,
             "month": "January",
             "question": 32,
-            "course": "Algebra I"
+            "course": "Algebra II"
+        },
+        "011832geo": {
+            "year": 2018,
+            "month": "January",
+            "question": 32,
+            "course": "Geometry"
         }
     }
     def test_parses_reference_correctly(self):
