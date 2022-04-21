@@ -2,3 +2,5 @@
 *.swo
 reader/temp/*
 **/__pycache__/*
+data/docx/*
+data/html/*
