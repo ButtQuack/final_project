@@ -17,7 +17,8 @@ class TestCaseExtended(TestCase):
         if hasattr(self, "samples"):
             self.sample_docs = []
             for sample_path in self.samples:
-                self.sample_docs.append(BS((SAMPLE_DOC_PATH/sample_path).read_text(), 'lxml'))
+                html = BS((SAMPLE_DOC_PATH/sample_path).read_text(), 'lxml')
+                self.sample_docs.append(html.body.contents[0])
 
     def assertDictsAreEqual(self, expected, observed):
         """Compares two dicts. 
