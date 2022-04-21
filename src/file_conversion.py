@@ -18,7 +18,7 @@ def docx_to_html(filepath, outdir=TEMPDIR):
     outpath = (outdir / filepath.name).with_suffix('.html')
     here = os.getcwd()
     os.chdir(outdir)
-    command = f"pandoc --extract-media . {filepath} -o {outpath.name}"
+    command = f"pandoc --extract-media {outpath.stem} {filepath} -o {outpath.name}"
     run(command, shell=True, check=True)
     os.chdir(here)
     return outpath
