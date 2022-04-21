@@ -50,6 +50,7 @@ def parse_choices(tag):
             "label": label.get_text(),
             "choice": str(choice_text),
         })
+    return choices
 
 def parse_question(tag):
     tokens = tag.get_text().split(' ')
