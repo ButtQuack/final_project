@@ -65,6 +65,10 @@ def parse_answer(tag):
     answer = str(tag)
     return int(tokens[0]), answer
 
+def parse_reference(ref):
+    "Parses a reference string, returning a dict. NOT DONE."
+    return {}
+
 def html_to_questions(html):
     "Parses test questions from html string"
     document = BS(html, 'lxml')
