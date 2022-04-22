@@ -48,6 +48,7 @@ def parse_reference(ref):
         "01": "January",
         "06": "June",
         "08": "August",
+        "spr": "Spring",
     }
     course_names = {
         "ai": "Algebra I",
