@@ -69,7 +69,10 @@ def parse_reference(ref):
 
 def html_to_questions(html):
     "Parses test questions from html string"
-    document = BS(html, 'lxml')
+    if isinstance(html, BS):
+        document = html
+    else:
+        document = BS(html, 'lxml')
     questions = {}
     question = None
     for tag in document.body.contents:

@@ -4,6 +4,8 @@
 
 from unittest import TestCase
 from tests.test_case_extended import TestCaseExtended
+from pathlib import Path
+from bs4 import BeautifulSoup as BS
 import sys
 
 # Make it possible to import modules from "src"
@@ -13,6 +15,7 @@ from html_reader import (
     is_choices,
     parse_choices,
     parse_reference,
+    html_to_questions,
 )
 
 class TestParseReference(TestCaseExtended):
@@ -64,3 +67,19 @@ class TestParseChoices(TestCaseExtended):
     def test_finds_four_choices(self):
         for doc in self.sample_docs:
             self.assertEqual(len(parse_choices(doc)), 4)
+
+class TestHTMLtoQuestions(TestCaseExtended):
+    def test_parses_all_questions(self):
+        samples = (
+            ("data/html/A.APR.A.1.OperationswithPolynomials1a.html", 15),
+        )
+        for filepath, expected_questions in samples:
+            question_html = BS(Path(filepath).read_text(), 'lxml')
+            print(type(question_html))
+            questions = html_to_questions(question_html)
+            self.assertEqual(expected_questions, len(questions))
+
+
+
+
+
