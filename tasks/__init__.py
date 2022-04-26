@@ -28,4 +28,14 @@ def generate_html(c, limit=0, clean=False):
     for docpath in tqdm(docpaths):
         docxpath = doc_to_docx(docpath, docxdir)
         html = docx_to_html(docxpath, htmldir)
-        
+
+@task
+def temp_parse_html(c):
+    "Show a parse of a sample HTML document"
+
+    from bs4 import BeautifulSoup as BS
+    from src.html_reader import get_labeled_question_parts
+    html = BS(Path("data/html/A.APR.A.1.OperationswithPolynomials1a.html").read_text(), "lxml")
+    for label, chunk in get_labeled_question_parts(html):
+        print('=' * 30 + ' ' + label + ' ' + '='*30)
+        print(chunk)

@@ -3,14 +3,14 @@ from bs4 import BeautifulSoup as BS
 def is_new_question(tag, tokens=None):
     if tokens == None:
         tokens = tag.get_text().split(' ')
-    return tag.name == 'p' and starts_with_number(tag, tokens) and not is_answer(tag, tokens)
+    return tag.name == 'p' and starts_with_number(tag, tokens) and not is_new_answer(tag, tokens)
 
 def starts_with_number(tag, tokens=None):
     if tokens == None:
         tokens = tag.get_text().split(' ')
     return tokens and tokens[0].isdigit()
 
-def is_answer(tag, tokens=None):
+def is_new_answer(tag, tokens=None):
     if tokens == None:
         tokens = tag.get_text().split(' ')
     return len(tokens) >= 2 and starts_with_number(tag, tokens) and tokens[1] == "ANS:"
@@ -67,6 +67,47 @@ def parse_reference(ref):
         "course": course
     }
 
+def get_labeled_question_parts(html):
+    """Breaks html up into (label, chunk) pieces of questions.
+    Each chunk is a BeautifulSoup HTML document containing a single div
+    whose class is "question", "choices", or "answer." For example:
+
+        <html>
+            <body>
+                <div class="question">
+                    ...
+                </div>
+            </body>
+        </html>
+
+    Yield is lke return, but the function keeps going. The effect
+    is that the function spits out a bunch of values one by one, 
+    as if you were iterating through a list.
+    """
+    chunk = None
+    label = "QUESTION"
+    for tag in html.body.contents:
+        if chunk is None: # This will only be true for the first tag.
+            chunk = tag.extract()
+        elif is_new_question(tag):
+            yield label, chunk
+            chunk = BS('<div class="question"></div>', 'lxml')
+            chunk.append(tag.extract())
+            label = "QUESTION"
+        elif is_choices(tag):
+            yield label, chunk
+            label = "CHOICES"
+            chunk = BS('<div class="choices"></div>', 'lxml')
+            chunk.append(tag.extract())
+        elif is_new_answer(tag):
+            yield label, chunk
+            label = "ANSWER"
+            chunk = BS('<div class="answer"></div>', 'lxml')
+            chunk.append(tag.extract())
+        else:
+            chunk.body.div.append(tag.extract())
+    yield label, chunk # ER
+        
 def html_to_questions(html):
     "Parses test questions from html string"
     if isinstance(html, BS):
