@@ -114,7 +114,13 @@ def html_to_questions(html):
         document = html
     else:
         document = BS(html, 'lxml')
+
     questions = {}
+
+    for label, chunk in get_labeled_question_parts(html):
+        # WHAT SHOULD WE DO HERE?
+
+    # ===== OLD CODE =======
     question = None
     for tag in document.body.contents:
         if is_new_question(tag):
